@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>小王子｜物件連結產生器</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:#f6f7fb; margin:0; padding:18px; color:#111}
+    .wrap{max-width:860px; margin:0 auto}
+    .card{background:#fff; border:1px solid #e7e9f2; border-radius:16px; padding:16px}
+    h1{font-size:18px; margin:0 0 6px}
+    .hint{color:#5b6270; font-size:13px; line-height:1.5}
+    label{display:block; font-weight:800; margin-top:12px; margin-bottom:6px}
+    input{width:100%; box-sizing:border-box; padding:12px 12px; border-radius:12px; border:1px solid #d7dbe5; font-size:15px}
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button{padding:12px 14px; border-radius:12px; border:1px solid #d7dbe5; background:#fff; font-weight:800; cursor:pointer}
+    button.primary{background:#0a84ff; border-color:#0a84ff; color:#fff}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+  </style>
+</head>
+<body>
+<div id="gate" style="position:fixed;inset:0;background:#f6f7fb;display:flex;align-items:center;justify-content:center;padding:18px;z-index:9999">
+  <div style="max-width:420px;width:100%;background:#fff;border:1px solid #e7e9f2;border-radius:16px;padding:16px">
+    <div style="font-weight:900;font-size:18px;margin-bottom:6px">管理頁（需要密碼）</div>
+    <div style="color:#5b6270;font-size:13px;line-height:1.5">請輸入密碼才能進入「物件連結產生器」。</div>
+    <label style="display:block;font-weight:800;margin-top:12px;margin-bottom:6px">密碼</label>
+    <input id="gatePw" type="password" placeholder="輸入密碼" style="width:100%;box-sizing:border-box;padding:12px 12px;border-radius:12px;border:1px solid #d7dbe5;font-size:15px" />
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button id="gateBtn" class="primary" style="flex:1">確認進入</button>
+    </div>
+    <div id="gateErr" style="margin-top:10px;color:#b42318;font-size:13px;display:none">密碼錯誤</div>
+  </div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = 'Q720306';
+function tryEnter(){
+  const got = (document.getElementById('gatePw').value||'').trim();
+  if(got !== ADMIN_PASSWORD){
+    const e=document.getElementById('gateErr');
+    e.style.display='block';
+    return;
+  }
+  document.getElementById('gate').remove();
+  document.getElementById('app').style.display='block';
+}
+document.getElementById('gateBtn').addEventListener('click', tryEnter);
+document.getElementById('gatePw').addEventListener('keydown', (ev)=>{ if(ev.key==='Enter'){ tryEnter(); }});
+</script>
+
+  <div id="app" style="display:none"><div class="wrap">
+    <div class="card">
+      <h1>物件連結產生器（你專用）</h1>
+      <div class="hint">把每個物件的網址貼上來 → 產生「給客戶的專屬連結（含編號）」。客戶只會看到名單頁，送出後才會解鎖物件。</div>
+
+      <label>物件網址（591 / Drive / Notion / 影片 / 任意URL）</label>
+      <input id="prop" type="url" placeholder="https://..." />
+
+      <div class="row">
+        <button class="primary" onclick="gen(true)">產生並打開客戶頁</button>
+        <button onclick="gen(false)">只產生（不跳轉）</button>
+        <button onclick="copy()">複製客戶連結</button>
+      </div>
+
+      <label>這組編號</label>
+      <input id="code" class="mono" readonly />
+      <label>客戶連結</label>
+      <input id="out" class="mono" readonly />
+      <div class="hint" id="status"></div>
+
+      <div class="hint" style="margin-top:12px">
+        小技巧：你也可以直接在客戶連結後面手動加 <span class="mono">?prop=...</span>。
+      </div>
+    </div></div>
+
+<script>
+function genCode(){
+  // 6 chars: base32-ish for readability
+  const chars='23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+  let s='';
+  for(let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+function clientBase(){
+  // index.html lives in same directory
+  const u = new URL(window.location.href);
+  u.pathname = u.pathname.replace(/admin\.html$/, '');
+  // ensure ends with / (directory)
+  if(!u.pathname.endsWith('/')) u.pathname += '/';
+  return u;
+}
+
+function gen(openNow){
+  const prop = (document.getElementById('prop').value||'').trim();
+  const st = document.getElementById('status');
+  if(!prop){ st.textContent='請先貼上物件網址。'; return; }
+  const base = clientBase();
+  const code = genCode();
+  base.searchParams.set('prop', prop);
+  base.searchParams.set('lid', code);
+  base.searchParams.set('v', String(Date.now()));
+  document.getElementById('code').value = code;
+  const link = base.toString();
+  document.getElementById('out').value = link;
+  st.textContent = openNow
+    ? '已產生，已幫你打開客戶頁（新分頁）。'
+    : '已產生。直接把「客戶連結」貼給客戶即可。';
+
+  if(openNow){
+    try{ window.open(link, '_blank'); }catch(e){}
+  }
+}
+
+async function copy(){
+  const v = document.getElementById('out').value;
+  const st = document.getElementById('status');
+  if(!v){ st.textContent='請先產生客戶連結。'; return; }
+  try{
+    await navigator.clipboard.writeText(v);
+    st.textContent='已複製。';
+  }catch(e){
+    st.textContent='無法自動複製（瀏覽器限制），請手動全選複製。';
+  }
+}
+
+function openClient(){
+  const v = document.getElementById('out').value;
+  if(!v){ gen(); }
+  const vv = document.getElementById('out').value;
+  if(vv) window.open(vv, '_blank');
+}
+</script>
+</body>
+</html>

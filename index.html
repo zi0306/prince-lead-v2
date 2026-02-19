@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>買賣費用快速試算｜小王子 0903895306</title>
+  <style>
+    :root{--bg:#0f1115;--card:#171a21;--text:#f2f4f8;--muted:#aeb6c2;--accent:#f2c94c;--line:#2a2f3a;--good:#4ade80;}
+    body{margin:0;font-family: ui-sans-serif,system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei";background:linear-gradient(180deg,#0f1115,#0b0d12);color:var(--text)}
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
+    .brand{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+    .badge{width:72px;height:72px;border-radius:18px;background:rgba(242,201,76,.15);display:grid;place-items:center;border:1px solid rgba(242,201,76,.35);overflow:hidden}
+    .badge span{font-weight:800;color:var(--accent)}
+    .avatar{width:72px;height:72px;object-fit:cover;display:block}
+    h1{font-size:20px;margin:0}
+    .sub{color:var(--muted);font-size:13px;margin-top:6px;line-height:1.4}
+    .hotline{margin-top:8px;font-size:16px;font-weight:800;color:var(--accent)}
+    .hotline a{color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(242,201,76,.5)}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:860px){.grid{grid-template-columns:1.1fr .9fr}}
+    .card{background:rgba(23,26,33,.92);border:1px solid var(--line);border-radius:16px;padding:16px}
+    .card h2{font-size:15px;margin:0 0 10px 0}
+    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}
+    input,select{width:100%;box-sizing:border-box;background:#0f1218;border:1px solid #2a2f3a;border-radius:12px;color:var(--text);padding:11px 12px;font-size:14px}
+    .row{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:520px){.row{grid-template-columns:1fr 1fr}}
+    .hint{color:var(--muted);font-size:12px;margin-top:8px;line-height:1.4}
+    .out{font-size:14px;line-height:1.55}
+    .big{font-size:20px;font-weight:800;color:var(--good)}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{cursor:pointer;border-radius:12px;border:1px solid #2a2f3a;background:#0f1218;color:var(--text);padding:10px 12px;font-size:13px}
+    button.primary{border-color:rgba(242,201,76,.45);background:rgba(242,201,76,.12)}
+    .btnRow{display:flex;flex-direction:column;gap:10px;align-items:stretch;width:100%}
+    a.primaryLink{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:12px;background:#0a84ff;color:#fff;text-decoration:none;font-weight:800;border:1px solid rgba(10,132,255,.6)}
+    a.lineBox{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:12px;background:#fff;color:#06c755;text-decoration:none;font-weight:900;border:2px solid #06c755}
+    img.lineIconImg{width:18px;height:18px;border-radius:6px;display:block}
+    .numBadge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;background:#111;color:#fff;font-weight:900;font-size:12px;flex:0 0 auto}
+    .note{margin-top:12px;border-top:1px dashed #2a2f3a;padding-top:12px;color:var(--muted);font-size:12px;line-height:1.45}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #2a2f3a;color:var(--muted);font-size:12px}
+    .k{color:#e5e7eb}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <div class="badge"><img class="avatar" src="./avatar.jpg?v=2" alt="小王子" /></div>
+      <div>
+        <h1>不動產買賣費用快速試算 <span class="pill">台灣</span></h1>
+        <div class="sub">先填姓名/電話→立刻看到「總成本＋月繳」試算；再一鍵取得完整明細（會回傳給你）。口徑預設：買方服務費2%、賣方服務費4%；契稅以HV×6%（未提供HV則用概算區間）。</div>
+        <div class="hotline">聯絡小王子：<a href="tel:+886903895306">0903895306</a></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>輸入</h2>
+
+        <div class="row">
+          <div>
+            <label>客戶姓名（必填）</label>
+            <input id="custName" type="text" placeholder="例如：王先生" />
+          </div>
+          <div>
+            <label>客戶電話（必填）</label>
+            <input id="custPhone" type="tel" placeholder="例如：09xx-xxx-xxx" />
+            <input id="propUrlHidden" type="hidden" value="" />
+            <input id="leadCodeHidden" type="hidden" value="" />
+          </div>
+        </div>
+        
+        <label>成交價（萬）</label>
+        <input id="priceWan" type="number" min="0" step="1" placeholder="例如：3300"  />
+
+        <div class="row">
+          <div>
+            <label>銀行貸款成數（%）</label>
+            <input id="loanPct" type="number" min="0" max="95" step="1" value="" placeholder="例如：70" />
+          </div>
+          <div>
+            <label>貸款年利率（%）</label>
+            <input id="aprPct" type="number" min="0" step="0.01" value="" placeholder="例如：2.2" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>貸款年限（年）</label>
+            <input id="loanYears" type="number" min="1" max="40" step="1" value="" placeholder="例如：30" />
+          </div>
+          <div>
+            <label>（選填）寬限期（年）</label>
+            <input id="graceYears" type="number" min="0" max="5" step="1" value="0" />
+          </div>
+        </div>
+        <div class="hint">本頁月繳為「本息攤還」概算。若有寬限期，月繳會先以「只繳息」估算。</div>
+
+        <div class="row">
+          <div>
+            <label>預估月租（萬，用於投報率）</label>
+            <input id="rentWan" type="number" min="0" step="0.1" value="0" />
+            <div class="hint">投報率＝（月租×12）÷成交價。先做粗估。</div>
+          </div>
+          <div></div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>買方服務費（%）</label>
+            <input id="buyerFeePct" type="number" min="0" step="0.1" value="2" />
+          </div>
+          <div>
+            <label>賣方服務費（%）</label>
+            <input id="sellerFeePct" type="number" min="0" step="0.1" value="4" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>契稅課稅現值 HV（元，可不填）</label>
+            <input id="hv" type="number" min="0" step="1" placeholder="沒有就留空" />
+            <div class="hint">正式契稅 = HV × 6%。沒HV則用成交價×0.2%～0.6%當概算。</div>
+          </div>
+          <div>
+            <label>代書+登記規費（萬，概算）</label>
+            <input id="notaryWan" type="number" min="0" step="0.1" value="12" />
+            <div class="hint">面談常用抓法：8～15萬；有貸款/塗銷/限制登記可抓高一點。</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>土增稅概算（成交價%）</label>
+            <select id="lvitPct">
+              <option value="2">2%（偏低）</option>
+              <option value="4" selected>4%（中間值）</option>
+              <option value="6">6%（偏高）</option>
+            </select>
+          </div>
+          <div>
+            <label>原購買價格（萬，用於房地合一稅概算）</label>
+            <input id="origBuyWan" type="number" min="0" step="1" value="" placeholder="例如：2800" />
+            <div class="hint">概算：獲利＝賣出價 − 原購買價；房地合一稅＝獲利 × 稅率%。實際依持有期間/自住條件/可扣除成本而變動。</div>
+          </div>
+          <div>
+            <label>房地合一稅率（%）</label>
+            <input id="faiPct" type="number" min="0" step="0.1" value="" placeholder="例如：35" />
+            <div class="hint">不知道就先空白；此頁僅做面談粗估。</div>
+          </div>
+        </div>
+
+        <div class="btns">
+            <div class="btnRow">
+              <button class="primary" onclick="submitLeadAndGo('property')">1. 一鍵送出</button>
+              <a class="lineBox" href="#" onclick="submitLeadAndGo('line'); return false;" aria-label="送出並開啟物件"><span class="numBadge" aria-hidden="true">2</span><img class="lineIconImg" src="./line-icon.jpg?v=1" alt="LINE" /></a>
+            </div>
+          </div>
+          <div class="hint" id="submitStatus"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="propertyCard" style="display:none">
+      <h2>物件資料</h2>
+      <div class="out">
+        <div class="hint">✅ 你已送出成功，物件資料已解鎖：</div>
+        <div style="height:10px"></div>
+        <a id="propertyLink" class="primaryLink" href="#" target="_blank" rel="noopener">打開物件資料</a>
+        <div style="height:10px"></div>
+        <a id="lineCta" class="primaryLink" href="#" onclick="submitLeadAndGo('propertyNewTab'); return false;" aria-label="開啟物件（新分頁）">開啟物件（新分頁）</a>
+        <div class="hint" id="propertyHint" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+  </div>
+  <div style="margin-top:18px;opacity:.35;font-size:12px">
+    <a href="./admin-hby6zkcyjokuel.html" style="color:#9aa3b2;text-decoration:none">管理入口</a>
+  </div>
+
+<script>
+function n(x){return Math.round(x*100)/100;}
+function calc(){
+  const custName = (document.getElementById('custName').value||'').trim();
+  const custPhone = (document.getElementById('custPhone').value||'').trim();
+  if(!custName || !custPhone){
+    alert('請先填寫客戶姓名與電話，再進行試算。');
+    return;
+  }
+  const P = Number(document.getElementById('priceWan').value||0);
+  const bFee = Number(document.getElementById('buyerFeePct').value||0)/100;
+  const sFee = Number(document.getElementById('sellerFeePct').value||0)/100;
+  const HV = Number(document.getElementById('hv').value||0);
+  const notary = Number(document.getElementById('notaryWan').value||0);
+  const lvitPct = Number(document.getElementById('lvitPct').value||0)/100;
+  const origBuyWan = Number(document.getElementById('origBuyWan').value||0);
+  const faiPct = Number(document.getElementById('faiPct').value||0)/100;
+  const profit = Math.max(0, P - origBuyWan);
+  const fai = profit * faiPct;
+
+  const loanPct = Number(document.getElementById('loanPct').value||0)/100;
+  const aprPct = Number(document.getElementById('aprPct').value||0);
+  const loanYears = Number(document.getElementById('loanYears').value||0);
+  const graceYears = Number(document.getElementById('graceYears').value||0);
+
+  const stamp = P*0.001;
+  const buyerSvc = P*bFee;
+
+  let deedTaxWan;
+  let deedNote;
+  if(HV>0){
+    const deed = HV*0.06; // NTD
+    deedTaxWan = deed/10000; // 1萬
+    deedNote = `契稅=HV×6%（HV已填）`;
+  } else {
+    const low = P*0.002;
+    const high = P*0.006;
+    deedTaxWan = null;
+    deedNote = `契稅概算=成交價×0.2%～0.6%（未填HV）`;
+    document.getElementById('buyerTotal').textContent = `${n(P+buyerSvc+stamp+low+notary)} ～ ${n(P+buyerSvc+stamp+high+notary)}`;
+    document.getElementById('buyerBreakdown').textContent = `拆解：成交${P} + 服務費${n(buyerSvc)} + 印花${n(stamp)} + 契稅${n(low)}～${n(high)} + 代書規費${n(notary)}。${deedNote}`;
+  }
+
+  if(deedTaxWan!==null){
+    const buyerTotal = P+buyerSvc+stamp+deedTaxWan+notary;
+    document.getElementById('buyerTotal').textContent = n(buyerTotal);
+    document.getElementById('buyerBreakdown').textContent = `拆解：成交${P} + 服務費${n(buyerSvc)} + 印花${n(stamp)} + 契稅${n(deedTaxWan)} + 代書規費${n(notary)}。${deedNote}`;
+  }
+
+  const sellerSvc = P*sFee;
+  const lvit = P*lvitPct;
+  const sellerNet = P - sellerSvc - lvit - fai;
+  document.getElementById('sellerNet').textContent = n(sellerNet);
+  document.getElementById('sellerBreakdown').textContent = `拆解：成交${P} − 服務費${n(sellerSvc)} − 土增稅概算${n(lvit)}（${n(lvitPct*100)}%） − 房地合一${n(fai)}（概算：獲利${n(profit)} × 稅率${n(faiPct*100)}%）。`;
+
+  // Loan / down payment
+  const loan = P * loanPct;
+  const down = Math.max(0, P - loan);
+  const r = (aprPct/100)/12;
+  const nMonths = Math.max(1, Math.round(loanYears*12));
+  let monthlyPI = 0;
+  if(loan<=0){
+    monthlyPI = 0;
+  } else if(r<=0){
+    monthlyPI = loan / nMonths;
+  } else {
+    monthlyPI = loan * r / (1 - Math.pow(1+r, -nMonths));
+  }
+  // grace: interest-only
+  const graceMonths = Math.max(0, Math.round(graceYears*12));
+  const monthlyInterestOnly = loan>0 ? (loan * r) : 0;
+
+  const loanMsg = graceMonths>0
+    ? `貸款：${n(loan)}萬（${n(loanPct*100)}%），利率${n(aprPct)}%，年限${loanYears}年；寬限期${graceYears}年（月繳息約 ${n(monthlyInterestOnly)}萬），寬限後本息攤還月繳約 ${n(monthlyPI)}萬。自備款（不含稅費）約 ${n(down)}萬。`
+    : `貸款：${n(loan)}萬（${n(loanPct*100)}%），利率${n(aprPct)}%，年限${loanYears}年；本息攤還月繳約 ${n(monthlyPI)}萬。自備款（不含稅費）約 ${n(down)}萬。`;
+  document.getElementById('loanBreakdown').textContent = loanMsg;
+
+  // Yield (gross)
+  const rentWan = Number(document.getElementById('rentWan').value||0);
+  const yieldPct = (P>0 && rentWan>0) ? (rentWan*12)/P*100 : 0;
+  document.getElementById('yieldBreakdown').textContent = (P>0 && rentWan>0)
+    ? `月租 ${n(rentWan)}萬 → 年租 ${n(rentWan*12)}萬；粗投報率約 ${n(yieldPct)}%（未扣稅費/空置/修繕）。`
+    : '填寫「預估月租」即可自動計算粗投報率。';
+
+  document.getElementById('copyStatus').textContent = '';
+}
+
+function resetDefaults(){
+  document.getElementById('priceWan').value='';
+  document.getElementById('buyerFeePct').value=2;
+  document.getElementById('sellerFeePct').value=4;
+  document.getElementById('hv').value='';
+  document.getElementById('notaryWan').value=12;
+  document.getElementById('lvitPct').value=4;
+  document.getElementById('housingTaxWan').value=0;
+  try{document.getElementById('loanPct').value='';}catch(e){}
+  try{document.getElementById('aprPct').value='';}catch(e){}
+  try{document.getElementById('loanYears').value='';}catch(e){}
+  try{document.getElementById('origBuyWan').value='';}catch(e){}
+  try{document.getElementById('faiPct').value='';}catch(e){}
+  calc();
+}
+
+function initPropertyFromQuery(){
+  const params = new URLSearchParams(window.location.search);
+  const u = params.get('prop');
+  const lid = params.get('lid');
+  const input = document.getElementById('propUrlHidden');
+  const codeEl = document.getElementById('leadCodeHidden');
+  const passEl = document.getElementById('leadPassHidden');
+  if(codeEl && lid) codeEl.value = lid;
+  if(passEl && pw) passEl.value = pw;
+  if(u){
+    const a = document.getElementById('propertyLink');
+    a.setAttribute('data-propurl', u);
+    a.href = u;
+    a.onclick = null;
+    if(input) input.value = u;
+    document.getElementById('propertyHint').textContent = '（已設定物件連結）';
+  } else {
+    const a = document.getElementById('propertyLink');
+    a.href = '#';
+    a.onclick = (e)=>{ e.preventDefault(); alert('尚未設定物件連結。'); };
+    document.getElementById('propertyHint').textContent = '尚未設定物件連結（請用你專用產生器生成帶物件的客戶連結）。';
+  }
+}
+
+function showProperty(){
+  const card = document.getElementById('propertyCard');
+  card.style.display = 'block';
+  card.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+async function submitLeadAndGo(mode){
+  const ok = await submitLead();
+  if(!ok) return;
+
+  const prop = (document.getElementById('propertyLink')?.getAttribute('data-propurl')||'').trim();
+  if(!prop){
+    alert('尚未設定物件網址（請由管理頁產生客戶連結）。');
+    return;
+  }
+
+  // 1) property: same tab
+  if(mode === 'property'){
+    window.location.href = prop;
+    return;
+  }
+
+  // 2) propertyNewTab: open new tab
+  if(mode === 'propertyNewTab'){
+    try{ window.open(prop, '_blank'); }catch(e){}
+    return;
+  }
+
+  // 3) line: add LINE + open property
+  // Best-effort on mobile browsers: open property in a new tab first, then navigate to LINE add-friend link.
+  if(mode === 'line'){
+    try{ window.open(prop, '_blank'); }catch(e){}
+    // go to your LINE add link
+    window.location.href = 'https://line.me/ti/p/aGp978WdFl';
+    return;
+  }
+}
+
+async function submitLead(){
+  const custName = (document.getElementById('custName').value||'').trim();
+  const custPhone = (document.getElementById('custPhone').value||'').trim();
+  if(!custName || !custPhone){
+    alert('請先填寫姓名與電話，並按【一鍵送出】後才會解鎖物件資料。');
+    return false;
+  }
+  // Ensure calculation ran
+  calc();
+
+  const payload = {
+    custName,
+    custPhone,
+    propUrl: String((document.getElementById('propUrlHidden')?.value||'')).trim(),
+    leadCode: String((document.getElementById('leadCodeHidden')?.value||'')).trim(),
+    leadPass: String((document.getElementById('leadPassHidden')?.value||'')).trim(),
+    ts: new Date().toISOString(),
+  };
+
+  const el = document.getElementById('submitStatus');
+  el.textContent = '送出中…';
+  try{
+    const r = await fetch('/submit', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+    const j = await r.json();
+    if(j && j.ok){
+      el.textContent = '✅ 已送出成功！物件資料已解鎖（可直接點下方按鈕查看）。';
+      return true;
+    } else {
+      el.textContent = '⚠️ 送出失敗，請稍後再試。' + (j && j.error ? ('（'+j.error+'）') : '');
+      return false;
+    }
+  }catch(e){
+    el.textContent = '⚠️ 送出失敗，請稍後再試。' + e;
+    return false;
+  }
+  return false;
+}
+
+initPropertyFromQuery();
+</script>
+</body>
+</html>
